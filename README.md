@@ -1,46 +1,183 @@
-# Getting Started with Create React App
+# Overscope Hooks over Contexts state-management for React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Convenience. Speed. Flexibility.
 
-## Available Scripts
+If you want to organize state management in your react application in a modern way, while maintaining flexibility and usability, then this package is for you
 
-In the project directory, you can run:
+## Contexts + Hooks approach
 
-### `npm start`
+Why should you choose the contexts + hooks approach? 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This approach allows you to easily and quickly organize independent and local state management at the level of a separate branch of the component tree with complete state isolation. 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+In simple terms: you can place several identical components on the page and their states will not overlap.
 
-### `npm test`
+### Problems
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+However, this approach has 2 significant problems:
+1. **performance** - any update of the context value will update absolutely all components using this context;
+2. **boilerplate** - leads to the appearance of a large amount of boilerplate and essentially unnecessary code.
 
-### `npm run build`
+This package solves these problems.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Introduction
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Advantages
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Separated value from reducers
+### Immer
+### Selectors
 
-### `npm run eject`
+## Disadvantages
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Usage
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## API
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## In comparison
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Default Contexts + Hooks:
 
-## Learn More
+```tsx
+import { DummyState, DummyTransform } from './dummyTypes'
+import { FunctionComponent, useCallback, useContext, useMemo, useState } from 'react'
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+export type DummyStore = DummyState & DummyTransform
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+export const DummyContext = createCotnext<DummyStore>({
+  count: 0,
+
+  statistics: {
+    multiply: 0,
+  },
+
+  increase: () => {},
+  multiply: () => {},
+})
+
+export const DummyProvider = DummyContext.Provider
+
+export const useDummy = (): DummyState => {
+  useContext(DummyContext)
+}
+
+export const DummyWorker: FunctionComponent<any> = () => {
+  const {
+    count,
+    statistics,
+    increase,
+    multiply,
+  } = useContext(DummyContext)
+  
+  const multiplyClick = useCallback(() => {
+    multiply(5)
+  }, [])
+  
+  return (
+    <div>
+      <div>{ count }</div>
+      <div>{ statistics.multiply }</div>
+      <button type="button" onClick={ increase }>Increase</button>
+      <button type="button" onClick={ multiplyClick }>Multiply</button>
+    </div>
+  )
+}
+
+export const DummyBlock: FunctionComponent<any> = () => {
+  const [ state, setState ] = useState<DummyState>({
+    count: initial,
+
+    statistics: {
+      multiply: 0,
+    },
+  })
+
+  const increase = useCallback(() => {
+    setState((old) => ({
+      ...old,
+      count: old.count + 1,
+    }))
+  }, [])
+
+  const multiply = useCallback((amount: number) => {
+    setState((old) => ({
+      ...old,
+      count: old.count * amount,
+      statistics: {
+        ...old.statistics,
+        multiply: old.statistics.multiply + 1,
+      },
+    }))
+  }, [])
+
+  const contextState = useMemo(() => ({
+    ...state,
+    increase,
+    multiply,
+  }), [ state, increase, multiply ])
+
+  return (
+    <DummyProvider value={ contextState }>
+      <DummyWorker />
+    </DummyProvider>
+  )
+}
+```
+
+```tsx
+import { DummyState, DummyTransform } from './dummyTypes'
+import { overscope, useTransform } from 'overscope'
+
+export const [ DummyProvider, useDummy ] = overscope<DummyState, DummyTransform>()
+
+export const DummyWorker: FunctionComponent<any> = () => {
+  const {
+    count,
+    statistics,
+  } = useDummy((value) => value.state)
+
+  const {
+    increase,
+    multiply,
+  } = useDummy((value) => value.transform)
+
+  const multiplyClick = useCallback(() => {
+    multiply(5)
+  }, [])
+
+  return (
+    <div>
+      <div>{ count }</div>
+      <div>{ statistics.multiply }</div>
+      <button type="button" onClick={ increase }>Increase</button>
+      <button type="button" onClick={ multiplyClick }>Multiply</button>
+    </div>
+  )
+}
+
+export const DummyBlock: FunctionComponent<any> = () => {
+  const [ state, setState ] = useState<DummyState>({
+    count: initial,
+
+    statistics: {
+      multiply: 0,
+    },
+  })
+
+  const transform = useTransform<DummyState, DummyTransform>(setState, (patch) => ({
+    increase: () => patch((current) => {
+      current.count++
+    }),
+    multiply: (value: number) => patch((current) => {
+      current.count *= value
+      current.statistics.multiply++
+    }),
+  }))
+  
+  return (
+    <DummyProvider state={ state } transform={ transform }>
+      <DummyWorker/>
+    </DummyProvider>
+  )
+}
+```
