@@ -22,22 +22,33 @@ This package solves these problems.
 
 ## Introduction
 
+TBD
+
 ## Advantages
 
+TBD
+
 ### Separated value from transform (reducers)
+TBD
+
 ### Immer
+TBD
+
 ### Selectors
+TBD
 
 ## Disadvantages
+TBD
 
 ## Usage
+TBD
 
 ## API
+TBD
 
 ## In comparison
 
-Default Contexts + Hooks:
-
+With `Contexts + Hooks`:
 ```tsx
 import { DummyState, DummyTransform } from './dummyTypes'
 import { FunctionComponent, useCallback, useContext, useMemo, useState } from 'react'
@@ -124,6 +135,7 @@ export const DummyBlock: FunctionComponent<any> = () => {
 }
 ```
 
+With `overscope`:
 ```tsx
 import { DummyState, DummyTransform } from './dummyTypes'
 import { overscope, useTransform } from 'overscope'
