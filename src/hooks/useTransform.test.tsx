@@ -3,11 +3,11 @@ import React, { FC, useEffect } from 'react'
 import { render } from '@testing-library/react'
 import { useTransform } from './useTransform'
 
-export type TestState = {
+type TestState = {
   count: number,
 }
 
-export type TestTransform = {
+type TestTransform = {
   increase: () => void,
 }
 

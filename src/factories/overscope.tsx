@@ -14,6 +14,7 @@ import {
   OverscopeTuple,
 } from '../types'
 import { OverscopeEmptyStoreError } from '../errors/OverscopeEmptyStoreError'
+import { useStoreMemo } from '../hooks/useStoreMemo'
 
 export const overscope = (
   <
@@ -39,13 +40,7 @@ export const overscope = (
         children,
       } = props
 
-      const store = useMemo((): OverscopeStore<State, Transform> => ({
-        state,
-        transform,
-      }), [
-        state,
-        transform,
-      ])
+      const store = useStoreMemo(state, transform)
 
       const storeRef = useRef(store)
       storeRef.current = store

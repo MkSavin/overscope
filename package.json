@@ -1,6 +1,6 @@
 {
   "name": "overscope",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React Hooks over Contexts state-management toolkit",
   "author": "Maxim Savin <MkSavin> (mksavin@mail.ru)",
   "contributors": [
@@ -29,7 +29,6 @@
     "immer": "^9.0.19",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
     "typescript": "^4.9.5"
   },
   "scripts": {
@@ -54,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "react-scripts": "5.0.1",
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
