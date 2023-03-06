@@ -24,7 +24,7 @@ This package solves these problems.
 
 ## Advantages
 
-### Separated value from reducers
+### Separated value from transform (reducers)
 ### Immer
 ### Selectors
 

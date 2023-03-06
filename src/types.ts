@@ -75,7 +75,8 @@ export type OverscopeObserverState<
   Transform extends OverscopeTransform
 > = {
   storeRef: MutableRefObject<OverscopeStore<State, Transform>|undefined>,
-  listen: (listener: OverscopeContextListener<State, Transform>) => OverscopeContextMuffler
+  listen: (listener: OverscopeContextListener<State, Transform>) => OverscopeContextMuffler,
+  default?: boolean,
 }
 
 /**

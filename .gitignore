@@ -28,3 +28,4 @@ debug.log
 
 .replica
 package-lock.json
+/lib

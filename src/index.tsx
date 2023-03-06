@@ -1,4 +1,3 @@
-export * from './errors/OverscopeNoContextError'
 export * from './errors/OverscopeEmptyStoreError'
 
 export * from './factories/overscope'

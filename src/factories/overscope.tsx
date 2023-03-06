@@ -13,7 +13,6 @@ import {
   OverscopeTransform,
   OverscopeTuple,
 } from '../types'
-import { OverscopeNoContextError } from '../errors/OverscopeNoContextError'
 import { OverscopeEmptyStoreError } from '../errors/OverscopeEmptyStoreError'
 
 export const overscope = (
@@ -27,6 +26,7 @@ export const overscope = (
       storeRef: { current: initial },
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       listen: () => () => {},
+      default: true,
     })
 
     const Provider: OverscopeProviderComponent<State, Transform> = (
@@ -61,6 +61,7 @@ export const overscope = (
             listenersRef.current.delete(listener)
           }
         },
+        default: false,
       }), [])
 
       useEffect(() => {
@@ -81,10 +82,6 @@ export const overscope = (
       equal = fastEqual,
     ) => {
       const observerState = useContext(ObserverContext)
-
-      if (!observerState) {
-        throw new OverscopeNoContextError(ObserverContext)
-      }
 
       const {
         storeRef,
