@@ -58,7 +58,7 @@ import { FunctionComponent, useCallback, useContext, useMemo, useState } from 'r
 
 export type DummyStore = DummyState & DummyTransform
 
-export const DummyContext = createCotnext<DummyStore>({
+export const DummyContext = createContext<DummyStore>({
   count: 0,
 
   statistics: {
@@ -71,9 +71,9 @@ export const DummyContext = createCotnext<DummyStore>({
 
 export const DummyProvider = DummyContext.Provider
 
-export const useDummy = (): DummyState => {
+export const useDummy = (): DummyState => (
   useContext(DummyContext)
-}
+)
 
 export const DummyWorker: FunctionComponent<any> = () => {
   const {

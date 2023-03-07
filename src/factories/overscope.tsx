@@ -93,9 +93,9 @@ export const overscope = (
       const [
         selected,
         setSelected,
-      ] = useState<ReturnType<typeof selector>>(
-        selector(storeRef.current),
-      )
+      ] = useState<ReturnType<typeof selector>>(() => (
+        selector(storeRef.current as OverscopeStore<State, Transform>)
+      ))
 
       const lastSelectedRef = useRef(selected)
       lastSelectedRef.current = selected
@@ -106,7 +106,7 @@ export const overscope = (
 
           if (!equal(selectedNextValue, lastSelectedRef.current)) {
             lastSelectedRef.current = selectedNextValue
-            setSelected(lastSelectedRef.current)
+            setSelected(() => lastSelectedRef.current)
           }
         })
       ), [ listen ])
