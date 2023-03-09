@@ -11,18 +11,18 @@ import {
   OverscopeState,
   OverscopeStore,
   OverscopeTransform,
-  OverscopeTuple,
+  OverscopeContextTuple,
 } from '../types'
 import { OverscopeEmptyStoreError } from '../errors/OverscopeEmptyStoreError'
 import { useStoreMemo } from '../hooks/useStoreMemo'
 
-export const overscope = (
+export const overscopeContext = (
   <
     State extends OverscopeState,
     Transform extends OverscopeTransform,
   >(
     initial?: OverscopeStore<State, Transform>,
-  ): OverscopeTuple<State, Transform> => {
+  ): OverscopeContextTuple<State, Transform> => {
     const ObserverContext = createContext<OverscopeObserverState<State, Transform>>({
       storeRef: { current: initial },
       // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -97,6 +97,16 @@ export const overscope = (
         selector(storeRef.current as OverscopeStore<State, Transform>)
       ))
 
+      const mountRef = useRef(false)
+
+      useEffect(() => {
+        mountRef.current = true
+
+        return () => {
+          mountRef.current = false
+        }
+      }, [])
+
       const lastSelectedRef = useRef(selected)
       lastSelectedRef.current = selected
 
@@ -106,7 +116,10 @@ export const overscope = (
 
           if (!equal(selectedNextValue, lastSelectedRef.current)) {
             lastSelectedRef.current = selectedNextValue
-            setSelected(() => lastSelectedRef.current)
+
+            if (mountRef.current) {
+              setSelected(() => lastSelectedRef.current)
+            }
           }
         })
       ), [ listen ])

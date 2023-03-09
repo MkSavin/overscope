@@ -6,7 +6,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { fireEvent } from '@storybook/testing-library'
 import { act } from 'react-dom/test-utils'
-import { overscope } from './overscope'
+import { overscopeContext } from './overscopeContext'
 
 describe('Overscope factory', () => {
   // eslint-disable-next-line no-console
@@ -18,7 +18,7 @@ describe('Overscope factory', () => {
   })
 
   it('Store factory results contents', () => {
-    const store = overscope()
+    const store = overscopeContext()
 
     expect(store).toHaveLength(3)
 
@@ -34,7 +34,7 @@ describe('Overscope factory', () => {
   })
 
   it('Store propagates default observer API', () => {
-    const [ ,, Context ] = overscope({
+    const [ ,, Context ] = overscopeContext({
       state: {
         contents: 'test',
       },
@@ -70,7 +70,7 @@ describe('Overscope factory', () => {
   })
 
   it('Hook throws OverscopeNoContextError', () => {
-    const [ , useStore ] = overscope()
+    const [ , useStore ] = overscopeContext()
 
     const TestComponent: FC = () => {
       useStore((store) => store)
@@ -90,7 +90,7 @@ describe('Overscope factory', () => {
   })
 
   it('Store propagates provided state and transform', () => {
-    const [ Provider,, Context ] = overscope({
+    const [ Provider,, Context ] = overscopeContext({
       state: {
         contents: 'test',
       },
@@ -154,7 +154,7 @@ describe('Overscope factory', () => {
     const handleClick = jest.fn()
     const handleListen = jest.fn()
 
-    const [ Provider, useStore, Context ] = overscope({
+    const [ Provider, useStore, Context ] = overscopeContext({
       state: {
         contents: 'test',
       },

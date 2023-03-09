@@ -1,4 +1,4 @@
-import { overscope } from '../../../factories/overscope'
+import { overscopeContext } from '../../../factories/overscopeContext'
 import { DummyState, DummyTransform } from '../types/dummyTypes'
 
-export const [ DummyProvider, useDummy ] = overscope<DummyState, DummyTransform>()
+export const [ DummyProvider, useDummy ] = overscopeContext<DummyState, DummyTransform>()

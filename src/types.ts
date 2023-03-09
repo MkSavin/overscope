@@ -106,7 +106,7 @@ export type OverscopeConsumer<
 /**
  * Overscope result tuple
  */
-export type OverscopeTuple<
+export type OverscopeContextTuple<
   State extends OverscopeState,
   Transform extends OverscopeTransform
 > = [

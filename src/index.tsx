@@ -1,5 +1,5 @@
 export * from './errors/OverscopeEmptyStoreError'
-export * from './factories/overscope'
+export * from './factories/overscopeContext'
 export * from './hooks/useStoreMemo'
 export * from './hooks/useTransform'
 export * from './types'
