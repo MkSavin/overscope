@@ -18,7 +18,9 @@ export type OverscopeReducer = (...args: any[]) => void
 /**
  * State reducers list
  */
-export type OverscopeTransform = Record<string, OverscopeReducer>
+export type OverscopeTransform = {
+  [name: string]: OverscopeReducer|OverscopeTransform,
+}
 
 /**
  * State storage
