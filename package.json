@@ -1,6 +1,6 @@
 {
   "name": "overscope",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "React Hooks over Contexts state-management toolkit",
   "author": "Maxim Savin <MkSavin> (mksavin@mail.ru)",
   "contributors": [
@@ -30,7 +30,7 @@
   ],
   "dependencies": {
     "fast-deep-equal": "^3.1.3",
-    "immer": "^9.0.19"
+    "immer": "^9.0.19 || ^10.0.3"
   },
   "peerDependencies": {
     "react": "^17.0.2 || ^18.2.0",
@@ -93,6 +93,6 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "webpack": "^5.75.0"
+    "webpack": "^5.76.0"
   }
 }
