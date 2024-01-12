@@ -90,22 +90,46 @@ export const [ DummyProvider, useDummy ] = overscopeContext<DummyState, DummyTra
 
 3. Working with data:
 
-Form the state using the usual `useState` hook with the previously created type
+Form the state using the usual `useState` hook with the previously created type.
 
 And also describe the transform (list of reducers) using the `useTransform` hook from the toolbox.
+To get the actual state value, you can use `current` in the patch context, or use `stateRef` to get the previously actual state value.
+
 Remember: another powerful `immer` tool is used inside, use it to the fullest!
 ```tsx
 const [ state, setState ] = useState<DummyState>({
   count: initial,
 })
 
-const transform = useTransform<DummyState, DummyTransform>(setState, (patch) => ({
+const transform = useTransform<DummyState, DummyTransform>([ state, setState ], (patch, stateRef) => ({
   increase: () => patch((current) => {
     current.count++
   }),
+  
   multiply: (multiplier) => patch((current) => {
     current.count *= multiplier
   }),
+  
+  complicated: {
+    fractal: () => patch((current) => {
+      // ... compute fractal
+    }),
+  },
+
+  /**
+   * Automatic events for *root* reducers (increase, multiply)
+   * 
+   * Warning: will not work with nested reducers (complicated.fractal)
+   */
+  _afterEach: () => {
+    // writes actual state after calling any of root reducers
+    console.log('before', stateRef.current)
+  },
+  
+  _beforeEach: () => {
+    // writes actual state before calling any of root reducers
+    console.log('before', stateRef.current)
+  },
 }))
 ```
 

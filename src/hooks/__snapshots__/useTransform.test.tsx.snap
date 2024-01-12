@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useTransform Do not executes event handlers for nested callbacks 1`] = `
+<DocumentFragment>
+  2
+</DocumentFragment>
+`;
+
+exports[`useTransform Executes event handlers 1`] = `
+<DocumentFragment>
+  22
+</DocumentFragment>
+`;
+
+exports[`useTransform Modifies provided store 1`] = `
+<DocumentFragment>
+  1
+</DocumentFragment>
+`;
+
+exports[`useTransform Provides actual state reference 1`] = `
+<DocumentFragment>
+  2
+</DocumentFragment>
+`;

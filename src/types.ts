@@ -2,7 +2,7 @@ import {
   Context,
   MutableRefObject,
   ReactElement,
-  ReactNode,
+  ReactNode, RefObject,
 } from 'react'
 
 /**
@@ -16,10 +16,18 @@ export type OverscopeState = Record<string, any>
 export type OverscopeReducer = (...args: any[]) => void
 
 /**
+ * State reducers bare list
+ */
+export type OverscopeBareTransform = {
+  [name: string]: OverscopeReducer|OverscopeBareTransform,
+}
+
+/**
  * State reducers list
  */
-export type OverscopeTransform = {
-  [name: string]: OverscopeReducer|OverscopeTransform,
+export type OverscopeTransform = OverscopeBareTransform & {
+  _beforeEach?: OverscopeReducer,
+  _afterEach?: OverscopeReducer,
 }
 
 /**
@@ -139,4 +147,5 @@ export type OverscopeTransformer<
   Transform extends OverscopeTransform
 > = (
   patch: OverscopePatch<State>,
+  stateRef: RefObject<State|undefined>,
 ) => Transform
